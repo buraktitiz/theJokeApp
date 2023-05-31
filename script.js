@@ -1,0 +1,35 @@
+const jokeButton = document.getElementById('jokeButton');
+const joke = document.getElementById('joke');
+
+
+const apiKey = 'bOfBkA6iPNg/70RxWOulBg==UQtwo9h3AKntmeMd';
+const apiUrl = 'https://api.api-ninjas.com/v1/dadjokes?limit=1';
+
+const options = {
+    method: 'GET',
+    headers: {
+        'X-Api-Key': apiKey
+    }
+}
+
+async function getJoke() {
+    try {
+        joke.textContent = 'Updating...';
+        jokeButton.textContent = 'Loading...';
+        jokeButton.disabled = true;
+
+        const response = await fetch(apiUrl, options);
+        const data = await response.json();
+
+        jokeButton.disabled = false;
+        jokeButton.textContent = 'Tell me a joke';
+        joke.textContent = data[0].joke;
+    } catch (error) {
+        joke.textContent = 'Try again later'
+
+        jokeButton.disabled = false;
+        jokeButton.textContent = 'Tell me a joke';
+    }
+}
+
+jokeButton.addEventListener('click', getJoke)
